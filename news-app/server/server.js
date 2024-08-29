@@ -7,7 +7,7 @@ app.use(cors()); // Enable CORS Middleware
 app.use(express.json()); // Enable JSON Parsing Middleware
 
 const client = new ApifyClient({
-    token: 'apify_api_YaPMcnbQB4HTnzRUpWo3PImwqX1MEh4xmQ3E', // Replace with your actual API token
+    token: 'apify_api_', // Replace with your actual API token
 });
 
 // Define the /news route
