@@ -7,7 +7,7 @@ app.use(cors()); // Enable CORS Middleware
 app.use(express.json()); // Enable JSON Parsing Middleware
 
 const client = new ApifyClient({
-    token: 'apify_api_', // Replace with your actual API token
+    token: '', // Replace with your actual API token
 });
 
 // Define the /news route
@@ -32,7 +32,17 @@ app.get('/news', async (req, res) => {
 
         const run = await client.actor("eWUEW5YpCaCBAa0Zs").call(input);
         const { items } = await client.dataset(run.defaultDatasetId).listItems();
-        res.json(items);
+
+        // Map the items to the expected format
+        const formattedItems = items.map(item => ({
+            title: item.title,
+            link: item.rssLink || item.loadedUrl || item.link, // Use rssLink if available
+            source: item.source,
+            publishedAt: item.publishedAt,
+            image: item.image || '', // Handle null image
+        }));
+
+        res.json(formattedItems);
     } catch (error) {
         console.error('Server error:', error);  // Log server-side errors
         res.status(500).json({ error: error.message });
